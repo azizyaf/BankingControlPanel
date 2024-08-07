@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankingControlPanel.Core.Models.Entities
 {
+    // Represents the address of a client.
     public class Address
     {
         public int Id { get; set; }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace BankingControlPanel.Core.Models.Entities
 {
+    // Represents a client in the banking control panel tool.
     public class Client
     {
         public int Id { get; set; }

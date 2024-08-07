@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankingControlPanel.Core.Models.Entities
 {
+    // Represents the search parameters used by an admin.
     public class SearchParameter
     {
         public int Id { get; set; }
