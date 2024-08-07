@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingControlPanel.Api", "BankingControlPanel.Api\BankingControlPanel.Api.csproj", "{EF217C88-FC9D-4290-9FAC-448C3DE42C23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF217C88-FC9D-4290-9FAC-448C3DE42C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF217C88-FC9D-4290-9FAC-448C3DE42C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF217C88-FC9D-4290-9FAC-448C3DE42C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF217C88-FC9D-4290-9FAC-448C3DE42C23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4331FA3B-655A-4AA5-9DC0-F855757A8D81}
+	EndGlobalSection
+EndGlobal
