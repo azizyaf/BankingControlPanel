@@ -5,6 +5,10 @@ VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingControlPanel.Api", "BankingControlPanel.Api\BankingControlPanel.Api.csproj", "{EF217C88-FC9D-4290-9FAC-448C3DE42C23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingControlPanel.Core", "BankingControlPanel.Core\BankingControlPanel.Core.csproj", "{9B3F37DF-ED8B-4BB9-8D12-78C9DCFD4A45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingControlPanel.Infrastructure", "BankingControlPanel.Infrastructure\BankingControlPanel.Infrastructure.csproj", "{AED72277-858A-4A27-8C06-FE172FD75095}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{EF217C88-FC9D-4290-9FAC-448C3DE42C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF217C88-FC9D-4290-9FAC-448C3DE42C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF217C88-FC9D-4290-9FAC-448C3DE42C23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B3F37DF-ED8B-4BB9-8D12-78C9DCFD4A45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B3F37DF-ED8B-4BB9-8D12-78C9DCFD4A45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B3F37DF-ED8B-4BB9-8D12-78C9DCFD4A45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B3F37DF-ED8B-4BB9-8D12-78C9DCFD4A45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AED72277-858A-4A27-8C06-FE172FD75095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AED72277-858A-4A27-8C06-FE172FD75095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AED72277-858A-4A27-8C06-FE172FD75095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AED72277-858A-4A27-8C06-FE172FD75095}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
