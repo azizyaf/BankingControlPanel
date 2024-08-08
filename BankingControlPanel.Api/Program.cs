@@ -1,6 +1,13 @@
+using BankingControlPanel.Core.Interfaces;
+using BankingControlPanel.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Register repositories
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<ISearchParametersRepository, SearchParametersRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -15,5 +15,7 @@ namespace BankingControlPanel.Core.Models.DTOs
         public string PersonalId { get; set; }
         public string MobileNumber { get; set; }
         public ClientGender Sex { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 }
