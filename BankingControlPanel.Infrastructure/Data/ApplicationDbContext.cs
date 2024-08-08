@@ -1,4 +1,5 @@
 ﻿using BankingControlPanel.Core.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -55,6 +56,71 @@ namespace BankingControlPanel.Infrastructure.Data
                 .HasOne(sp => sp.Admin)        // Each SearchParameter has one Admin.
                 .WithMany()                    // Each Admin can have many SearchParameters.
                 .HasForeignKey(sp => sp.AdminId); // The foreign key in SearchParameter is AdminId.
+
+            // Seed roles
+            var adminRoleId = Guid.NewGuid().ToString();
+            var userRoleId = Guid.NewGuid().ToString();
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = adminRoleId,
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = userRoleId,
+                    Name = "User",
+                    NormalizedName = "USER"
+                }
+            );
+
+            // Seed admin user
+            var adminUserId = Guid.NewGuid().ToString();
+            var hasher = new PasswordHasher<ApplicationUser>();
+            modelBuilder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser
+                {
+                    Id = adminUserId,
+                    UserName = "admin@admin.com",
+                    NormalizedUserName = "ADMIN@ADMIN.COM",
+                    Email = "admin@admin.com",
+                    NormalizedEmail = "ADMIN@ADMIN.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "Admin@123123"),
+                    SecurityStamp = Guid.NewGuid().ToString()
+                }
+            );
+
+            // Seed regular user
+            var userUserId = Guid.NewGuid().ToString();
+            modelBuilder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser
+                {
+                    Id = userUserId,
+                    UserName = "user@user.com",
+                    NormalizedUserName = "USER@USER.COM",
+                    Email = "user@user.com",
+                    NormalizedEmail = "USER@USER.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "User@123123"),
+                    SecurityStamp = Guid.NewGuid().ToString()
+                }
+            );
+
+            // Assign roles to users
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    UserId = adminUserId,
+                    RoleId = adminRoleId
+                },
+                new IdentityUserRole<string>
+                {
+                    UserId = userUserId,
+                    RoleId = userRoleId
+                }
+            );
         }
     }
 
