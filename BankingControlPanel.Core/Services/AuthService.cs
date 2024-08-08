@@ -184,6 +184,39 @@ namespace BankingControlPanel.Core.Services
         }
 
         /// <summary>
+        /// Deletes a user by ID.
+        /// </summary>
+        /// <param name="userId">The ID of the user to delete.</param>
+        /// <returns>True if the user was deleted successfully, otherwise false.</returns>
+        public async Task<bool> DeleteUserAsync(string userId)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    throw new Exception("User not found.");
+                }
+
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User {UserId} deleted successfully.", userId);
+                    return true;
+                }
+
+                throw new Exception($"Delete failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the user.");
+                throw;
+            }
+        }
+
+
+        /// <summary>
         /// Retrieves all roles.
         /// </summary>
         /// <returns>A list of roles.</returns>
