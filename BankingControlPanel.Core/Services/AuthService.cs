@@ -186,13 +186,15 @@ namespace BankingControlPanel.Core.Services
         /// <summary>
         /// Deletes a user by ID.
         /// </summary>
-        /// <param name="userId">The ID of the user to delete.</param>
+        /// <param name="deleteUserDto">The ID of the user to delete.</param>
         /// <returns>True if the user was deleted successfully, otherwise false.</returns>
-        public async Task<bool> DeleteUserAsync(string userId)
+        public async Task<bool> DeleteUserAsync(DeleteUserDto deleteUserDto)
         {
+            ValidateDto(deleteUserDto);
+
             try
             {
-                var user = await _userManager.FindByIdAsync(userId);
+                var user = await _userManager.FindByIdAsync(deleteUserDto.UserId);
                 if (user == null)
                 {
                     throw new Exception("User not found.");
@@ -202,7 +204,7 @@ namespace BankingControlPanel.Core.Services
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User {UserId} deleted successfully.", userId);
+                    _logger.LogInformation("User {UserId} deleted successfully.", deleteUserDto.UserId);
                     return true;
                 }
 
@@ -215,6 +217,7 @@ namespace BankingControlPanel.Core.Services
             }
         }
 
+        #region Roles
 
         /// <summary>
         /// Retrieves all roles.
@@ -236,6 +239,68 @@ namespace BankingControlPanel.Core.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving roles.");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a role by ID.
+        /// </summary>
+        /// <param name="roleId">The ID of the role to retrieve.</param>
+        /// <returns>The role details.</returns>
+        public async Task<IdentityRoleDto> GetRoleByIdAsync(string roleId)
+        {
+            try
+            {
+                var role = await _roleManager.FindByIdAsync(roleId);
+                if (role == null)
+                {
+                    return null;
+                }
+
+                _logger.LogInformation("Role {RoleId} retrieved successfully.", roleId);
+                return new IdentityRoleDto
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the role.");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Adds a new role.
+        /// </summary>
+        /// <param name="addRoleDto">The role details to add.</param>
+        /// <returns>The added role details.</returns>
+        public async Task<IdentityRoleDto> AddRoleAsync(AddRoleDto addRoleDto)
+        {
+            ValidateDto(addRoleDto);
+
+            try
+            {
+                var role = new IdentityRole(addRoleDto.Name);
+                var result = await _roleManager.CreateAsync(role);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Role {RoleName} added successfully.", addRoleDto.Name);
+                    return new IdentityRoleDto
+                    {
+                        Id = role.Id,
+                        Name = role.Name
+                    };
+                }
+
+                throw new Exception($"Add role failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while adding the role.");
                 throw;
             }
         }
@@ -281,38 +346,40 @@ namespace BankingControlPanel.Core.Services
         }
 
         /// <summary>
-        /// Adds a new role.
+        /// Deletes a role by ID.
         /// </summary>
-        /// <param name="addRoleDto">The role details to add.</param>
-        /// <returns>The added role details.</returns>
-        public async Task<IdentityRoleDto> AddRoleAsync(AddRoleDto addRoleDto)
+        /// <param name="deleteRoleDto">The ID of the role to delete.</param>
+        /// <returns>True if the role was deleted successfully, otherwise false.</returns>
+        public async Task<bool> DeleteRoleAsync(DeleteRoleDto deleteRoleDto)
         {
-            ValidateDto(addRoleDto);
+            ValidateDto(deleteRoleDto);
 
             try
             {
-                var role = new IdentityRole(addRoleDto.Name);
-                var result = await _roleManager.CreateAsync(role);
+                var role = await _roleManager.FindByIdAsync(deleteRoleDto.RoleId);
+                if (role == null)
+                {
+                    throw new Exception("Role not found.");
+                }
+
+                var result = await _roleManager.DeleteAsync(role);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("Role {RoleName} added successfully.", addRoleDto.Name);
-                    return new IdentityRoleDto
-                    {
-                        Id = role.Id,
-                        Name = role.Name
-                    };
+                    _logger.LogInformation("Role {RoleId} deleted successfully.", deleteRoleDto.RoleId);
+                    return true;
                 }
 
-                throw new Exception($"Add role failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                throw new Exception($"Delete role failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while adding the role.");
+                _logger.LogError(ex, "An error occurred while deleting the role.");
                 throw;
             }
         }
 
+        #endregion
 
         private string GenerateJwtToken(ApplicationUser user, string role)
         {

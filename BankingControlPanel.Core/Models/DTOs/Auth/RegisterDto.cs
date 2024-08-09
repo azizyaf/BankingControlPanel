@@ -20,7 +20,6 @@ namespace BankingControlPanel.Core.Models.DTOs.Auth
         [StringLength(100, ErrorMessage = "The password must be at least {2} characters long.", MinimumLength = 6)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Role is required")]
-        public string Role { get; set; } // Admin or User
+        public string? Role { get; set; } // Admin or User
     }
 }

@@ -13,9 +13,11 @@ namespace BankingControlPanel.Core.Interfaces
         Task<AuthResponseDto> LoginAsync(LoginDto loginDto);
         Task<IEnumerable<ApplicationUserDto>> GetUsersAsync();
         Task<ApplicationUserDto> UpdateUserAsync(UpdateUserDto updateUserDto);
-        Task<bool> DeleteUserAsync(string userId);
+        Task<bool> DeleteUserAsync(DeleteUserDto deleteUserDto);
         Task<IEnumerable<IdentityRoleDto>> GetRolesAsync();
-        Task<IdentityRoleDto> UpdateRoleAsync(UpdateRoleDto updateRoleDto);
+        Task<IdentityRoleDto> GetRoleByIdAsync(string roleId);
         Task<IdentityRoleDto> AddRoleAsync(AddRoleDto addRoleDto);
+        Task<IdentityRoleDto> UpdateRoleAsync(UpdateRoleDto updateRoleDto);
+        Task<bool> DeleteRoleAsync(DeleteRoleDto deleteRoleDto);
     }
 }
