@@ -29,6 +29,8 @@ builder.Services.AddScoped<ISearchParametersRepository, SearchParametersReposito
 
 // Register services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IClientsService, ClientsService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 // Configure JWT authentication
 builder.Services.AddAuthentication(options =>
