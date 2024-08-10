@@ -11,6 +11,7 @@ namespace BankingControlPanel.Core.Interfaces
     public interface IClientRepository
     {
         Task<IEnumerable<Client>> GetClientsAsync(ClientsQueryParameters parameters);
+        Task<int> GetTotalClientsAsync(ClientsQueryParameters parameters);
         Task<Client> GetClientByIdAsync(int clientId);
         Task AddAsync(Client client);
         Task UpdateAsync(Client client);

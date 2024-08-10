@@ -34,6 +34,16 @@ namespace BankingControlPanel.Infrastructure.Repositories
             {
                 IQueryable<Client> query = _context.Clients.AsQueryable();
 
+                // Apply filters based on search term
+                if (!string.IsNullOrEmpty(parameters.SearchTerm))
+                {
+                    query = query.Where(c => c.FirstName.Contains(parameters.SearchTerm) ||
+                                             c.LastName.Contains(parameters.SearchTerm) ||
+                                             c.Email.Contains(parameters.SearchTerm) ||
+                                             c.PersonalId.Contains(parameters.SearchTerm) ||
+                                             c.MobileNumber.Contains(parameters.SearchTerm));
+                }
+
                 // Filter by FirstName if provided
                 if (!string.IsNullOrEmpty(parameters.FirstName))
                 {
@@ -52,6 +62,38 @@ namespace BankingControlPanel.Infrastructure.Repositories
                     query = query.Where(c => c.Email.Contains(parameters.Email));
                 }
 
+                // Filter by PersonalId if provided
+                if (!string.IsNullOrEmpty(parameters.PersonalId))
+                {
+                    query = query.Where(c => c.PersonalId == parameters.PersonalId);
+                }
+
+                // Filter by MobileNumber if provided
+                if (!string.IsNullOrEmpty(parameters.MobileNumber))
+                {
+                    query = query.Where(c => c.MobileNumber.Contains(parameters.MobileNumber));
+                }
+
+                // Filter by Sex if provided
+                if (parameters.Sex != default)
+                {
+                    query = query.Where(c => c.Sex == parameters.Sex);
+                }
+
+                // Apply sorting
+                if (!string.IsNullOrEmpty(parameters.SortBy))
+                {
+                    query = parameters.SortBy.ToLower() switch
+                    {
+                        "firstname" => parameters.SortDescending ? query.OrderByDescending(c => c.FirstName) : query.OrderBy(c => c.FirstName),
+                        "lastname" => parameters.SortDescending ? query.OrderByDescending(c => c.LastName) : query.OrderBy(c => c.LastName),
+                        "email" => parameters.SortDescending ? query.OrderByDescending(c => c.Email) : query.OrderBy(c => c.Email),
+                        "personalid" => parameters.SortDescending ? query.OrderByDescending(c => c.PersonalId) : query.OrderBy(c => c.PersonalId),
+                        "mobilenumber" => parameters.SortDescending ? query.OrderByDescending(c => c.MobileNumber) : query.OrderBy(c => c.MobileNumber),
+                        _ => query // Default case if SortBy is not recognized
+                    };
+                }
+
                 // Implement paging
                 var skip = (parameters.PageNumber - 1) * parameters.PageSize;
                 query = query.Skip(skip).Take(parameters.PageSize);
@@ -64,6 +106,71 @@ namespace BankingControlPanel.Infrastructure.Repositories
                 throw new Exception("An error occurred while retrieving the list of clients.", ex);
             }
         }
+
+        /// <summary>
+        /// Retrieves the total number of clients based on the specified query parameters, including filtering.
+        /// </summary>
+        /// <param name="parameters">The query parameters for filtering.</param>
+        /// <returns>The total number of clients that match the specified criteria.</returns>
+        public async Task<int> GetTotalClientsAsync(ClientsQueryParameters parameters)
+        {
+            try
+            {
+                _logger.LogInformation("Retrieving total number of clients with given query parameters.");
+
+                IQueryable<Client> query = _context.Clients.AsQueryable();
+
+                // Apply filters based on search term
+                if (!string.IsNullOrEmpty(parameters.SearchTerm))
+                {
+                    query = query.Where(c => c.FirstName.Contains(parameters.SearchTerm) ||
+                                             c.LastName.Contains(parameters.SearchTerm) ||
+                                             c.Email.Contains(parameters.SearchTerm) ||
+                                             c.PersonalId.Contains(parameters.SearchTerm) ||
+                                             c.MobileNumber.Contains(parameters.SearchTerm));
+                }
+
+                // Apply individual filters
+                if (!string.IsNullOrEmpty(parameters.FirstName))
+                {
+                    query = query.Where(c => c.FirstName.Contains(parameters.FirstName));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.LastName))
+                {
+                    query = query.Where(c => c.LastName.Contains(parameters.LastName));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.Email))
+                {
+                    query = query.Where(c => c.Email.Contains(parameters.Email));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.PersonalId))
+                {
+                    query = query.Where(c => c.PersonalId == parameters.PersonalId);
+                }
+
+                if (!string.IsNullOrEmpty(parameters.MobileNumber))
+                {
+                    query = query.Where(c => c.MobileNumber.Contains(parameters.MobileNumber));
+                }
+
+                if (parameters.Sex != default)
+                {
+                    query = query.Where(c => c.Sex == parameters.Sex);
+                }
+
+                return await query.CountAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the total number of clients.");
+                throw new Exception("An error occurred while retrieving the total number of clients.", ex);
+            }
+        }
+
+
 
         /// <summary>
         /// Retrieves a client by its unique identifier.

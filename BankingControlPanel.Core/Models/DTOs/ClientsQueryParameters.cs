@@ -15,6 +15,9 @@ namespace BankingControlPanel.Core.Models.DTOs
         public string PersonalId { get; set; }
         public string MobileNumber { get; set; }
         public ClientGender Sex { get; set; }
+        public string SearchTerm { get; set; } // Optional search term for general filtering
+        public string SortBy { get; set; } // Sorting field (e.g., "FirstName", "LastName", "Email")
+        public bool SortDescending { get; set; } = false; // True for descending order, false for ascending
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
