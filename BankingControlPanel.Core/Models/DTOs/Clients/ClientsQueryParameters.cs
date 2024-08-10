@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankingControlPanel.Core.Models.DTOs
+namespace BankingControlPanel.Core.Models.DTOs.Clients
 {
     public class ClientsQueryParameters
     {

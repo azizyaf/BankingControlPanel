@@ -1,5 +1,5 @@
 ﻿using BankingControlPanel.Core.Interfaces;
-using BankingControlPanel.Core.Models.DTOs;
+using BankingControlPanel.Core.Models.DTOs.Clients;
 using BankingControlPanel.Core.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

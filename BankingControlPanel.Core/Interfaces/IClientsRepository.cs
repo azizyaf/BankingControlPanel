@@ -1,4 +1,4 @@
-﻿using BankingControlPanel.Core.Models.DTOs;
+﻿using BankingControlPanel.Core.Models.DTOs.Clients;
 using BankingControlPanel.Core.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BankingControlPanel.Core.Interfaces
 {
-    public interface IClientRepository
+    public interface IClientsRepository
     {
         Task<IEnumerable<Client>> GetClientsAsync(ClientsQueryParameters parameters);
         Task<int> GetTotalClientsAsync(ClientsQueryParameters parameters);

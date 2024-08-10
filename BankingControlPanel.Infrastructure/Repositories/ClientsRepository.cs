@@ -1,5 +1,5 @@
 ﻿using BankingControlPanel.Core.Interfaces;
-using BankingControlPanel.Core.Models.DTOs;
+using BankingControlPanel.Core.Models.DTOs.Clients;
 using BankingControlPanel.Core.Models.Entities;
 using BankingControlPanel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace BankingControlPanel.Infrastructure.Repositories
 {
-    public class ClientRepository : IClientRepository
+    public class ClientsRepository : IClientsRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<ClientRepository> _logger;
+        private readonly ILogger<ClientsRepository> _logger;
 
-        public ClientRepository(ApplicationDbContext context, ILogger<ClientRepository> logger)
+        public ClientsRepository(ApplicationDbContext context, ILogger<ClientsRepository> logger)
         {
             _context = context;
             _logger = logger;
@@ -169,8 +169,6 @@ namespace BankingControlPanel.Infrastructure.Repositories
                 throw new Exception("An error occurred while retrieving the total number of clients.", ex);
             }
         }
-
-
 
         /// <summary>
         /// Retrieves a client by its unique identifier.

@@ -1,4 +1,4 @@
-﻿using BankingControlPanel.Core.Models.DTOs;
+﻿using BankingControlPanel.Core.Models.DTOs.Clients;
 using System;
 using System.Collections.Generic;
 using System.Linq;

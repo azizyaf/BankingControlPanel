@@ -24,7 +24,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 // Register repositories
-builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IClientsRepository, ClientsRepository>();
 builder.Services.AddScoped<ISearchParametersRepository, SearchParametersRepository>();
 
 // Register services
