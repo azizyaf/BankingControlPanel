@@ -11,6 +11,7 @@ namespace BankingControlPanel.Core.Models.DTOs.Clients
     public class UpdateClientDto
     {
         [Required(ErrorMessage = "Client ID is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Client ID must be 1 or more.")]
         public int ClientId { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]

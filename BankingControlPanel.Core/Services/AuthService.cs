@@ -1,6 +1,7 @@
 ﻿using BankingControlPanel.Core.Interfaces;
 using BankingControlPanel.Core.Models.DTOs.Auth;
 using BankingControlPanel.Core.Models.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -23,14 +24,16 @@ namespace BankingControlPanel.Core.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthService> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ILogger<AuthService> logger)
+        public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ILogger<AuthService> logger, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -106,6 +109,43 @@ namespace BankingControlPanel.Core.Services
                 throw;
             }
         }
+
+        /// <summary>
+        /// Gets the current user based on the current HTTP context.
+        /// </summary>
+        /// <returns>The current ApplicationUser if found; otherwise, null.</returns>
+        public async Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            try
+            {
+                // Retrieve the username from the current HTTP context
+                var userName = _userManager.GetUserId(_httpContextAccessor.HttpContext.User);
+
+                if (string.IsNullOrEmpty(userName))
+                {
+                    _logger.LogWarning("Username not found in the current context.");
+                    return null;
+                }
+
+                // Retrieve the user from the database using the username
+                var user = await _userManager.FindByNameAsync(userName);
+
+                if (user == null)
+                {
+                    _logger.LogWarning($"User with username {userName} not found in the database.");
+                    return null;
+                }
+
+                _logger.LogInformation($"User with username {userName} retrieved successfully.");
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the current user.");
+                throw new Exception("An error occurred while retrieving the current user.", ex);
+            }
+        }
+
 
         /// <summary>
         /// Retrieves all users.

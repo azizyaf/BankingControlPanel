@@ -1,7 +1,6 @@
 ﻿using BankingControlPanel.Core.Interfaces;
 using BankingControlPanel.Core.Models.DTOs.Clients;
 using BankingControlPanel.Core.Models.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,14 +15,14 @@ namespace BankingControlPanel.Core.Services
     public class AdminService : IAdminService
     {
         private readonly ISearchParametersRepository _searchParametersRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<AdminService> _logger;
+        private readonly IAuthService _authService;
 
-        public AdminService(ISearchParametersRepository searchParametersRepository, IHttpContextAccessor httpContextAccessor, ILogger<AdminService> logger)
+        public AdminService(ISearchParametersRepository searchParametersRepository, ILogger<AdminService> logger, IAuthService authService)
         {
             _searchParametersRepository = searchParametersRepository;
-            _httpContextAccessor = httpContextAccessor;
             _logger = logger;
+            _authService = authService;
         }
 
         /// <summary>
@@ -36,12 +35,12 @@ namespace BankingControlPanel.Core.Services
             {
                 _logger.LogInformation("Saving search parameters.");
 
-                // Retrieve the AdminId (UserId) from the bearer token
-                var adminId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                // Retrieve the current user (Admin) using the newly created method
+                var currentUser = await _authService.GetCurrentUserAsync();
 
-                if (string.IsNullOrEmpty(adminId))
+                if (currentUser == null)
                 {
-                    throw new Exception("Unable to retrieve AdminId from the token.");
+                    throw new Exception("Unable to retrieve the current user.");
                 }
 
                 // Serialize ClientsQueryParameters to JSON for storage in the SearchCriteria field
@@ -51,7 +50,8 @@ namespace BankingControlPanel.Core.Services
                 {
                     SearchCriteria = serializedParameters,
                     SearchDate = DateTime.UtcNow,
-                    AdminId = adminId // Set the retrieved AdminId
+                    AdminId = currentUser.Id, // Set the retrieved AdminId
+                    Admin = currentUser
                 };
 
                 await _searchParametersRepository.AddSearchParameterAsync(searchParameter);
@@ -63,6 +63,7 @@ namespace BankingControlPanel.Core.Services
             }
         }
 
+
         /// <summary>
         /// Retrieves the last 3 search parameters used by a specific admin.
         /// </summary>
@@ -71,17 +72,17 @@ namespace BankingControlPanel.Core.Services
         {
             try
             {
-                // Retrieve the AdminId (UserId) from the bearer token
-                var adminId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                // Retrieve the current user (Admin) using the newly created method
+                var currentUser = await _authService.GetCurrentUserAsync();
 
-                if (string.IsNullOrEmpty(adminId))
+                if (currentUser == null)
                 {
-                    throw new Exception("Unable to retrieve AdminId from the token.");
+                    throw new Exception("Unable to retrieve the current user.");
                 }
 
-                _logger.LogInformation("Retrieving the last 3 search parameters for admin with ID {AdminId}.", adminId);
+                _logger.LogInformation("Retrieving the last 3 search parameters for admin with ID {AdminId}.", currentUser.Id);
 
-                var searchParameters = await _searchParametersRepository.GetLastSearchParametersAsync(adminId, 3);
+                var searchParameters = await _searchParametersRepository.GetLastSearchParametersAsync(currentUser.Id, 3);
 
                 // Deserialize the SearchCriteria back into ClientsQueryParameters
                 var deserializedParameters = new List<ClientsQueryParameters>();

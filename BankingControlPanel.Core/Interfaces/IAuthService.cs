@@ -1,4 +1,5 @@
 ﻿using BankingControlPanel.Core.Models.DTOs.Auth;
+using BankingControlPanel.Core.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace BankingControlPanel.Core.Interfaces
     {
         Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto);
         Task<AuthResponseDto> LoginAsync(LoginDto loginDto);
+        Task<ApplicationUser> GetCurrentUserAsync();
         Task<IEnumerable<ApplicationUserDto>> GetUsersAsync();
         Task<ApplicationUserDto> UpdateUserAsync(UpdateUserDto updateUserDto);
         Task<bool> DeleteUserAsync(DeleteUserDto deleteUserDto);

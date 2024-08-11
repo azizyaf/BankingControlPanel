@@ -32,7 +32,9 @@ namespace BankingControlPanel.Infrastructure.Repositories
         {
             try
             {
-                IQueryable<Client> query = _context.Clients.AsQueryable();
+                IQueryable<Client> query = _context.Clients
+                    .Include(c => c.Address)
+                    .Include(c => c.Accounts);
 
                 // Apply filters based on search term
                 if (!string.IsNullOrEmpty(parameters.SearchTerm))
@@ -41,7 +43,10 @@ namespace BankingControlPanel.Infrastructure.Repositories
                                              c.LastName.Contains(parameters.SearchTerm) ||
                                              c.Email.Contains(parameters.SearchTerm) ||
                                              c.PersonalId.Contains(parameters.SearchTerm) ||
-                                             c.MobileNumber.Contains(parameters.SearchTerm));
+                                             c.MobileNumber.Contains(parameters.SearchTerm) ||
+                                             c.Address.City.Contains(parameters.SearchTerm) ||
+                                             c.Address.Street.Contains(parameters.SearchTerm) ||
+                                             c.Accounts.Any(a => a.AccountNumber.Contains(parameters.SearchTerm)));
                 }
 
                 // Filter by FirstName if provided
@@ -78,6 +83,48 @@ namespace BankingControlPanel.Infrastructure.Repositories
                 if (parameters.Sex != default)
                 {
                     query = query.Where(c => c.Sex == parameters.Sex);
+                }
+
+                // Apply Address filters
+                if (!string.IsNullOrEmpty(parameters.Country))
+                {
+                    query = query.Where(c => c.Address.Country.Contains(parameters.Country));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.City))
+                {
+                    query = query.Where(c => c.Address.City.Contains(parameters.City));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.Street))
+                {
+                    query = query.Where(c => c.Address.Street.Contains(parameters.Street));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.ZipCode))
+                {
+                    query = query.Where(c => c.Address.ZipCode.Contains(parameters.ZipCode));
+                }
+
+                // Apply Account filters
+                if (!string.IsNullOrEmpty(parameters.AccountNumber))
+                {
+                    query = query.Where(c => c.Accounts.Any(a => a.AccountNumber.Contains(parameters.AccountNumber)));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.AccountType))
+                {
+                    query = query.Where(c => c.Accounts.Any(a => a.AccountType.Contains(parameters.AccountType)));
+                }
+
+                if (parameters.MinBalance.HasValue)
+                {
+                    query = query.Where(c => c.Accounts.Any(a => a.Balance >= parameters.MinBalance.Value));
+                }
+
+                if (parameters.MaxBalance.HasValue)
+                {
+                    query = query.Where(c => c.Accounts.Any(a => a.Balance <= parameters.MaxBalance.Value));
                 }
 
                 // Apply sorting
@@ -127,7 +174,10 @@ namespace BankingControlPanel.Infrastructure.Repositories
                                              c.LastName.Contains(parameters.SearchTerm) ||
                                              c.Email.Contains(parameters.SearchTerm) ||
                                              c.PersonalId.Contains(parameters.SearchTerm) ||
-                                             c.MobileNumber.Contains(parameters.SearchTerm));
+                                             c.MobileNumber.Contains(parameters.SearchTerm) ||
+                                             c.Address.City.Contains(parameters.SearchTerm) ||
+                                             c.Address.Street.Contains(parameters.SearchTerm) ||
+                                             c.Accounts.Any(a => a.AccountNumber.Contains(parameters.SearchTerm)));
                 }
 
                 // Apply individual filters
@@ -161,6 +211,48 @@ namespace BankingControlPanel.Infrastructure.Repositories
                     query = query.Where(c => c.Sex == parameters.Sex);
                 }
 
+                // Apply Address filters
+                if (!string.IsNullOrEmpty(parameters.Country))
+                {
+                    query = query.Where(c => c.Address.Country.Contains(parameters.Country));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.City))
+                {
+                    query = query.Where(c => c.Address.City.Contains(parameters.City));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.Street))
+                {
+                    query = query.Where(c => c.Address.Street.Contains(parameters.Street));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.ZipCode))
+                {
+                    query = query.Where(c => c.Address.ZipCode.Contains(parameters.ZipCode));
+                }
+
+                // Apply Account filters
+                if (!string.IsNullOrEmpty(parameters.AccountNumber))
+                {
+                    query = query.Where(c => c.Accounts.Any(a => a.AccountNumber.Contains(parameters.AccountNumber)));
+                }
+
+                if (!string.IsNullOrEmpty(parameters.AccountType))
+                {
+                    query = query.Where(c => c.Accounts.Any(a => a.AccountType.Contains(parameters.AccountType)));
+                }
+
+                if (parameters.MinBalance.HasValue)
+                {
+                    query = query.Where(c => c.Accounts.Any(a => a.Balance >= parameters.MinBalance.Value));
+                }
+
+                if (parameters.MaxBalance.HasValue)
+                {
+                    query = query.Where(c => c.Accounts.Any(a => a.Balance <= parameters.MaxBalance.Value));
+                }
+
                 return await query.CountAsync();
             }
             catch (Exception ex)
@@ -179,7 +271,11 @@ namespace BankingControlPanel.Infrastructure.Repositories
         {
             try
             {
-                return await _context.Clients.FindAsync(clientId);
+                return await _context.Clients
+                    .Include(c => c.Address) // Include the Address entity
+                    .Include(c => c.Accounts) // Include the related Accounts
+                    .FirstOrDefaultAsync(c => c.Id == clientId); // Use FirstOrDefaultAsync instead of FindAsync
+
             }
             catch (Exception ex)
             {
