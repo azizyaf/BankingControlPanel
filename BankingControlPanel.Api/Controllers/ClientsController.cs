@@ -8,6 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingControlPanel.Api.Controllers
 {
+    /// <summary>
+    /// Handles operations related to managing clients within the system.
+    /// This controller provides functionality to create, update, delete, 
+    /// and retrieve client information, including filtering, sorting, 
+    /// and pagination.
+    /// </summary>
     [Authorize(Roles = "Admin")]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -26,7 +32,7 @@ namespace BankingControlPanel.Api.Controllers
         }
 
         /// <summary>
-        /// Lists clients with filtering, sorting, and paging.
+        /// Lists clients with filtering, sorting, and paging (Admin Only).
         /// </summary>
         /// <param name="queryParameters">The parameters for filtering, sorting, and paging.</param>
         /// <returns>Returns a paginated list of clients.</returns>
@@ -46,7 +52,7 @@ namespace BankingControlPanel.Api.Controllers
         }
 
         /// <summary>
-        /// Retrieves a specific client by ID.
+        /// Retrieves a specific client by ID (Admin Only).
         /// </summary>
         /// <param name="clientId">The ID of the client to retrieve.</param>
         /// <returns>Returns the client details if found.</returns>
@@ -76,7 +82,7 @@ namespace BankingControlPanel.Api.Controllers
         }
 
         /// <summary>
-        /// Creates a new client.
+        /// Creates a new client (Admin Only).
         /// </summary>
         /// <param name="createClientDto">The details of the client to create.</param>
         /// <returns>Returns the created client with its ID.</returns>
@@ -102,7 +108,7 @@ namespace BankingControlPanel.Api.Controllers
         }
 
         /// <summary>
-        /// Updates an existing client.
+        /// Updates an existing client (Admin Only).
         /// </summary>
         /// <param name="updateClientDto">The updated client details.</param>
         /// <returns>Returns the updated client details.</returns>
@@ -129,7 +135,7 @@ namespace BankingControlPanel.Api.Controllers
         }
 
         /// <summary>
-        /// Deletes a client by ID.
+        /// Deletes a client by ID (Admin Only).
         /// </summary>
         /// <param name="clientId">The ID of the client to delete.</param>
         /// <returns>Returns Ok with a confirmation message if the deletion was successful, or NotFound if the client was not found.</returns>
@@ -159,7 +165,7 @@ namespace BankingControlPanel.Api.Controllers
         }
 
         /// <summary>
-        /// Retrieves the last 3 search parameters used by the current admin user.
+        /// Retrieves the last 3 search parameters used by the current admin user (Admin Only).
         /// </summary>
         /// <returns>An IActionResult containing the last 3 ClientsQueryParameters.</returns>
         [HttpGet("last-searches")]
