@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingControlPanel.Api", "BankingControlPanel.Api\BankingControlPanel.Api.csproj", "{EF217C88-FC9D-4290-9FAC-448C3DE42C23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankingControlPanel.Api", "BankingControlPanel.Api\BankingControlPanel.Api.csproj", "{EF217C88-FC9D-4290-9FAC-448C3DE42C23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingControlPanel.Core", "BankingControlPanel.Core\BankingControlPanel.Core.csproj", "{9B3F37DF-ED8B-4BB9-8D12-78C9DCFD4A45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankingControlPanel.Core", "BankingControlPanel.Core\BankingControlPanel.Core.csproj", "{9B3F37DF-ED8B-4BB9-8D12-78C9DCFD4A45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingControlPanel.Infrastructure", "BankingControlPanel.Infrastructure\BankingControlPanel.Infrastructure.csproj", "{AED72277-858A-4A27-8C06-FE172FD75095}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankingControlPanel.Infrastructure", "BankingControlPanel.Infrastructure\BankingControlPanel.Infrastructure.csproj", "{AED72277-858A-4A27-8C06-FE172FD75095}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postman Collection", "Postman Collection", "{C89F4409-C4FE-42CE-A848-22A1EC7F93AD}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\Desktop\Banking Control Panel API.postman_collection.json = ..\..\..\..\..\Desktop\Banking Control Panel API.postman_collection.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
