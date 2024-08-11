@@ -1,4 +1,5 @@
 ﻿using BankingControlPanel.Core.Models.Enums;
+using BankingControlPanel.Core.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,7 +31,8 @@ namespace BankingControlPanel.Core.Models.DTOs.Clients
 
         [Required(ErrorMessage = "Mobile number is required.")]
         [Phone(ErrorMessage = "Invalid phone number.")]
-        [RegularExpression(@"^\+[1-9]\d{1,14}$", ErrorMessage = "Mobile number must be in international format.")]
+        //[RegularExpression(@"^\+[1-9]\d{1,14}$", ErrorMessage = "Mobile number must be in international format.")]
+        [PhoneNumber(ErrorMessage = "Invalid phone number.")]
         public string MobileNumber { get; set; }
 
         [Required(ErrorMessage = "Sex is required.")]
