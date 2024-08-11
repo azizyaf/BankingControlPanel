@@ -9,6 +9,7 @@ namespace BankingControlPanel.Api.Controllers
 {
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)] // Internal Server Error
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -28,6 +29,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <returns>The authentication response containing the JWT token.</returns>
         [HttpPost("admin/register")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDto registerDto)
         {
             if (!ModelState.IsValid)
@@ -54,6 +57,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <param name="registerDto">The registration details.</param>
         /// <returns>The authentication response containing the JWT token.</returns>
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
         public async Task<IActionResult> RegisterUser([FromBody] RegisterDto registerDto)
         {
             if (!ModelState.IsValid)
@@ -81,6 +86,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <param name="loginDto">The login details.</param>
         /// <returns>The authentication response containing the JWT token.</returns>
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)] // Unauthorized
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             if (!ModelState.IsValid)
@@ -107,6 +114,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <returns>A list of users.</returns>
         [HttpGet("users")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
         public async Task<IActionResult> GetUsers()
         {
             try
@@ -128,6 +137,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <returns>The updated user details.</returns>
         [HttpPut("users")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
         {
             if (!ModelState.IsValid)
@@ -155,6 +166,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <returns>True if the user was deleted successfully, otherwise false.</returns>
         [HttpDelete("users")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
         public async Task<IActionResult> DeleteUser([FromBody] DeleteUserDto deleteUserDto)
         {
             if (!ModelState.IsValid)
@@ -183,6 +196,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <returns>A list of roles.</returns>
         [HttpGet("roles")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
         public async Task<IActionResult> GetRoles()
         {
             try
@@ -204,6 +219,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <returns>The added role details.</returns>
         [HttpPost("roles")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
         public async Task<IActionResult> AddRole([FromBody] AddRoleDto addRoleDto)
         {
             if (!ModelState.IsValid)
@@ -231,6 +248,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <returns>The updated role details.</returns>
         [HttpPut("roles")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
         public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleDto updateRoleDto)
         {
             if (!ModelState.IsValid)
@@ -258,6 +277,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <returns>True if the role was deleted successfully, otherwise false.</returns>
         [HttpDelete("roles")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
         public async Task<IActionResult> DeleteRole([FromBody] DeleteRoleDto deleteRoleDto)
         {
             if (!ModelState.IsValid)

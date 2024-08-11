@@ -17,6 +17,7 @@ namespace BankingControlPanel.Api.Controllers
     [Authorize(Roles = "Admin")]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)] // Internal Server Error
     [ApiController]
     public class ClientsController : ControllerBase
     {
@@ -37,6 +38,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <param name="queryParameters">The parameters for filtering, sorting, and paging.</param>
         /// <returns>Returns a paginated list of clients.</returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)] // Service Unavailable
         public async Task<IActionResult> ListClients([FromQuery] ClientsQueryParameters queryParameters)
         {
             try
@@ -47,7 +50,7 @@ namespace BankingControlPanel.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while listing clients.");
-                return StatusCode(503, "Service unavailable. Please try again later.");
+                return StatusCode(503, new { Message = "Service unavailable. Please try again later." });
             }
         }
 
@@ -57,6 +60,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <param name="clientId">The ID of the client to retrieve.</param>
         /// <returns>Returns the client details if found.</returns>
         [HttpGet("{clientId}")]
+        [ProducesResponseType(typeof(ClientDto), StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)] // Service Unavailable
         public async Task<IActionResult> GetClientById(int clientId)
         {
             if (clientId <= 0)
@@ -77,7 +82,7 @@ namespace BankingControlPanel.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving the client.");
-                return StatusCode(503, "Service unavailable. Please try again later.");
+                return StatusCode(503, new { Message = "Service unavailable. Please try again later." });
             }
         }
 
@@ -87,6 +92,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <param name="createClientDto">The details of the client to create.</param>
         /// <returns>Returns the created client with its ID.</returns>
         [HttpPost]
+        [ProducesResponseType(typeof(ClientDto), StatusCodes.Status201Created)] // Created
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)] // Service Unavailable
         public async Task<IActionResult> CreateClient([FromBody] CreateClientDto createClientDto)
         {
             if (!ModelState.IsValid)
@@ -103,7 +110,7 @@ namespace BankingControlPanel.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while creating client.");
-                return StatusCode(503, "Service unavailable. Please try again later.");
+                return StatusCode(503, new { Message = "Service unavailable. Please try again later." });
             }
         }
 
@@ -113,6 +120,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <param name="updateClientDto">The updated client details.</param>
         /// <returns>Returns the updated client details.</returns>
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)] // Service Unavailable
         public async Task<IActionResult> UpdateClient([FromBody] UpdateClientDto updateClientDto)
         {
             if (!ModelState.IsValid)
@@ -130,7 +139,7 @@ namespace BankingControlPanel.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while updating the client.");
-                return StatusCode(503, "Service unavailable. Please try again later.");
+                return StatusCode(503, new { Message = "Service unavailable. Please try again later." });
             }
         }
 
@@ -140,6 +149,8 @@ namespace BankingControlPanel.Api.Controllers
         /// <param name="clientId">The ID of the client to delete.</param>
         /// <returns>Returns Ok with a confirmation message if the deletion was successful, or NotFound if the client was not found.</returns>
         [HttpDelete("{clientId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)] // Service Unavailable
         public async Task<IActionResult> DeleteClient(int clientId)
         {
             if (clientId <= 0)
@@ -155,12 +166,12 @@ namespace BankingControlPanel.Api.Controllers
                     return NotFound($"Client with ID {clientId} not found.");
                 }
 
-                return Ok($"Client with ID {clientId} has been successfully deleted.");
+                return Ok(new { Message = $"Client with ID {clientId} has been successfully deleted." });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while deleting the client.");
-                return StatusCode(503, "Service unavailable. Please try again later.");
+                return StatusCode(503, new { Message = "Service unavailable. Please try again later." });
             }
         }
 
@@ -169,6 +180,8 @@ namespace BankingControlPanel.Api.Controllers
         /// </summary>
         /// <returns>An IActionResult containing the last 3 ClientsQueryParameters.</returns>
         [HttpGet("last-searches")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)] // Service Unavailable
         public async Task<IActionResult> GetLastSearchParameters()
         {
             try
@@ -186,7 +199,7 @@ namespace BankingControlPanel.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving the last 3 search parameters.");
-                return StatusCode(500, "An error occurred while processing your request.");
+                return StatusCode(503, new { Message = "Service unavailable. Please try again later." });
             }
         }
     }
