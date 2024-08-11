@@ -1,3 +1,4 @@
+using BankingControlPanel.Api.Middleware;
 using BankingControlPanel.Core.Interfaces;
 using BankingControlPanel.Core.Models.Entities;
 using BankingControlPanel.Core.Services;
@@ -65,6 +66,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Add the global exception handler middleware
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
