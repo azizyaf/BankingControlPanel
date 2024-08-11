@@ -104,7 +104,7 @@ namespace BankingControlPanel.Core.Services
                 if (client == null)
                 {
                     _logger.LogWarning("Client with ID {ClientId} not found.", clientId);
-                    throw new Exception("Client not found.");
+                    return null;
                 }
 
                 // Map the Client entity to ClientDto

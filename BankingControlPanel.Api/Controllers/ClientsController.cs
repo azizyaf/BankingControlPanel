@@ -1,4 +1,5 @@
-﻿using BankingControlPanel.Core.Interfaces;
+﻿using Asp.Versioning;
+using BankingControlPanel.Core.Interfaces;
 using BankingControlPanel.Core.Models.DTOs.Clients;
 using BankingControlPanel.Core.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace BankingControlPanel.Api.Controllers
 {
     [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ClientsController : ControllerBase
     {

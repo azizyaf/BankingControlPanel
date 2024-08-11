@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using BankingControlPanel.Api.Middleware;
 using BankingControlPanel.Core.Interfaces;
 using BankingControlPanel.Core.Models.Entities;
@@ -14,6 +15,12 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+});
 
 // Register ApplicationDbContext with connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

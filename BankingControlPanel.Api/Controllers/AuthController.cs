@@ -1,4 +1,5 @@
-﻿using BankingControlPanel.Core.Interfaces;
+﻿using Asp.Versioning;
+using BankingControlPanel.Core.Interfaces;
 using BankingControlPanel.Core.Models.DTOs.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -6,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingControlPanel.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
